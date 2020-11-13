@@ -1,7 +1,6 @@
 use clap::{Arg, App};
 
 fn main() {
-    //TODO push to github
 
     //parse cmd args
     let matches = App::new("Csv Generator")
@@ -11,6 +10,7 @@ fn main() {
                  .short("s")
                  .long("schema")
                  .takes_value(true)
+                 .required(true)
                  .help("A schema file"))
         .arg(Arg::with_name("outfile")
                  .short("o")
@@ -25,25 +25,13 @@ fn main() {
         .get_matches();
         
     let outfile = matches.value_of("outfile").unwrap_or("output.csv");
-    println!("The output will be written to: {}", outfile);        
+    let schema_file = matches.value_of("schema").unwrap();
+    let rows = matches.value_of("rows").unwrap_or("10").parse::<i32>().expect("Failed to parse 'rows' argument");
+    println!("The output will be written to: {}, using schema file: {}, generating {} rows", outfile, schema_file, rows);
+    
     //parse schema toml
     //generate csv from schema
     //BONUS concurent line generation, feed to writer
     
     //println!("Hello, world!");
 }
-
-
-/*
-    let num_str = matches.value_of("num");
-    match num_str {
-        None => println!("No idea what your favorite number is."),
-        Some(s) => {
-            match s.parse::<i32>() {
-                Ok(n) => println!("Your favorite number must be {}.", n + 5),
-                Err(_) => println!("That's not a number! {}", s),
-            }
-        }
-    }
-}
-*/
